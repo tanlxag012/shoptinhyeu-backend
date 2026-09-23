@@ -29,6 +29,7 @@ app.use(helmet());
 app.use(cors({
   origin: [
     'http://localhost:3000',   // React app
+    "https://shoptinhyeu-t.vercel.app",
     'http://localhost:5173',   // Vite dev
     'http://localhost:4173',   // Vite preview
     ...(process.env.ALLOWED_ORIGINS?.split(',') || []),
