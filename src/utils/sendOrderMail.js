@@ -17,6 +17,15 @@ transporter.verify((err, success) => {
 
 const sendOrderMail = async (order) => {
   console.log("📧 Sending order email:", order.orderCode);
+  const products = order.items
+  .map((item) => `
+    <tr>
+      <td>${item.name}</td>
+      <td align="center">${item.quantity}</td>
+      <td align="right">${item.price.toLocaleString("vi-VN")}đ</td>
+    </tr>
+  `)
+  .join("");
 
   const html = `
     <h2>🛒 Có đơn hàng mới từ website 4EM</h2>
