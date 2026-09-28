@@ -72,7 +72,7 @@ exports.createOrder = asyncHandler(async (req, res) => {
   res.status(201).json({ success: true, order });
   // Gửi mail ở nền
   sendOrderMail(order)
-  .then(() => console.log("✅ Email sent"))
+  .then(() => console.log("✅ Email sent check"))
   .catch((err) => console.error("❌ Email failed:", err));
 });
 
