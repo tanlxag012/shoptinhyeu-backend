@@ -2,11 +2,12 @@ const asyncHandler = require('express-async-handler');
 const Order   = require('../models/Order');
 const Product = require('../models/Product');
 const Coupon  = require('../models/Coupon');
-
+const { sendOrderMail } = require('../utils/sendOrderMail');
 // ─── USER ──────────────────────────────────────────────────
 
 // @POST /api/orders
 exports.createOrder = asyncHandler(async (req, res) => {
+  console.log("🟢 Tạo đơn hàng:", req.body);
   const { items, shippingAddress, paymentMethod, couponCode, note, guestInfo } = req.body;
 
   if (!items?.length) { res.status(400); throw new Error('Không có sản phẩm trong đơn hàng'); }
@@ -60,6 +61,13 @@ exports.createOrder = asyncHandler(async (req, res) => {
     note,
     statusHistory: [{ status: 'pending', note: 'Đơn hàng được tạo' }],
   });
+  console.log("🟢 Order tạo xong:", order._id);
+  try {
+  await sendOrderMail(order);
+  console.log("✅ Đã gửi email đơn hàng");
+} catch (err) {
+  console.error("❌ Lỗi gửi email:", err.message);
+}
 
   // Trừ tồn kho
   await Promise.all(items.map(item =>
