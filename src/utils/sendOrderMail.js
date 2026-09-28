@@ -7,17 +7,10 @@ const transporter = nodemailer.createTransport({
     pass: process.env.SHOP_EMAIL_PASSWORD,
   },
 });
-transporter.verify((err, success) => {
-  if (err) {
-    console.error("❌ Gmail verify lỗi:", err);
-  } else {
-    console.log("✅ Gmail sẵn sàng gửi mail");
-  }
-});
 
 const sendOrderMail = async (order) => {
   console.log("📧 Sending order email:", order.orderCode);
-  const products = order.items
+const products = order.items
   .map((item) => `
     <tr>
       <td>${item.name}</td>
@@ -26,7 +19,6 @@ const sendOrderMail = async (order) => {
     </tr>
   `)
   .join("");
-
   const html = `
     <h2>🛒 Có đơn hàng mới từ website 4EM</h2>
 
