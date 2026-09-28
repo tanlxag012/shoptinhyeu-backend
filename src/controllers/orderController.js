@@ -61,14 +61,7 @@ exports.createOrder = asyncHandler(async (req, res) => {
     note,
     statusHistory: [{ status: 'pending', note: 'Đơn hàng được tạo' }],
   });
-  console.log("🟢 Order tạo xong:", order._id);
-  try {
-  await sendOrderMail(order);
-  console.log("✅ Đã gửi email đơn hàng");
-} catch (err) {
-  console.error("❌ Lỗi gửi email:", err.message);
-}
-
+ 
   // Trừ tồn kho
   await Promise.all(items.map(item =>
     Product.findByIdAndUpdate(item.product, {
@@ -77,6 +70,10 @@ exports.createOrder = asyncHandler(async (req, res) => {
   ));
 
   res.status(201).json({ success: true, order });
+  // Gửi mail ở nền
+  sendOrderMail(order)
+  .then(() => console.log("✅ Email sent"))
+  .catch((err) => console.error("❌ Email failed:", err));
 });
 
 // @GET /api/orders/my-orders
