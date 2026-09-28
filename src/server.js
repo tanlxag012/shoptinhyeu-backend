@@ -30,6 +30,7 @@ app.use(cors({
   origin: [
     'http://localhost:3000',   // React app
     "https://shoptinhyeu-frontend-ycwn.vercel.app",
+    "https://shoptinhyeu-frontend.vercel.app/",
     'http://localhost:5173',   // Vite dev
     'http://localhost:4173',   // Vite preview
     ...(process.env.ALLOWED_ORIGINS?.split(',') || []),
